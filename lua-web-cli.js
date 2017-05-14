@@ -14,11 +14,18 @@ const output = document.getElementById('fengari-console');
 const input = document.getElementById('fengari-input');
 const prompt = document.getElementById('fengari-prompt');
 
-function triggerEvent(el, type) {
+
+const triggerEvent = function(el, type) {
     var e = document.createEvent('HTMLEvents');
     e.initEvent(type, false, true);
     el.dispatchEvent(e);
 }
+
+const out = function(msg) {
+    output.innerHTML += msg;
+    triggerEvent(output, 'change');
+    output.scrollTop = output.scrollHeight;
+};
 
 const luaW_print = function(L) {
     let n = lua.lua_gettop(L); /* number of arguments */
@@ -37,16 +44,13 @@ const luaW_print = function(L) {
         lua.lua_pop(L, 1);
     }
 
-    // Don't use console.log if Node
-    output.innerHTML += lua.to_jsstring(str) + "\n";
-    triggerEvent(output, 'change');
+    out(lua.to_jsstring(str) + "\n");
     return 0;
 };
 
 const report = function(L, status) {
     if (status !== lua.LUA_OK) {
-        output.innerHTML += `${lua.lua_tojsstring(L, -1)}\n`;
-        triggerEvent(output, 'change');
+        out(`${lua.lua_tojsstring(L, -1)}\n`);
         lua.lua_pop(L, 1);
     }
     return status;
@@ -63,8 +67,7 @@ const msghandler = function(L) {
     }
     lauxlib.luaL_traceback(L, L, msg, 1);  /* append a standard traceback */
 
-    output.innerHTML += lua.lua_tojsstring(L, -1);
-    triggerEvent(output, 'change');
+    out(lua.lua_tojsstring(L, -1));
 
     return 1;  /* return the traceback */
 };
@@ -81,8 +84,7 @@ const docall = function(L, narg, nres) {
 const doREPL = function(L) {
     lua.lua_getglobal(L, _PROMPT);
     prompt.innerHTML = ">";
-    output.innerHTML += "\n> " + input.value + "\n";
-    triggerEvent(output, 'change');
+    out("\n> " + input.value + "\n");
     lua.lua_pop(L, 1);
 
     if (input.value.length === 0)
@@ -104,8 +106,7 @@ const doREPL = function(L) {
         /* continuation */
         lua.lua_pop(L, 1);
         lua.lua_getglobal(L, _PROMPT2);
-        output.innerHTML += "\n";
-        triggerEvent(output, 'change');
+        out("\n");
         prompt.innerHTML = ">>";
         lua.lua_pop(L, 1);
         let buffer = lua.to_luastring(input.value);

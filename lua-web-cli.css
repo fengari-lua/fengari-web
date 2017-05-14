@@ -3,6 +3,14 @@
     color: #333;
     background: #f8f8f8;
     padding: 0.5em;
+    text-align: left;
+    width: 600px;
+    margin: auto;
+}
+
+.repl code {
+    max-height: 200px;
+    overflow-y: scroll;
 }
 
 pre {
