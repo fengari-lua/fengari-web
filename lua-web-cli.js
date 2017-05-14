@@ -23,7 +23,6 @@ const triggerEvent = function(el, type) {
 
 const out = function(msg) {
     output.innerHTML += msg;
-    triggerEvent(output, 'change');
     output.scrollTop = output.scrollHeight;
 };
 
@@ -126,6 +125,8 @@ const doREPL = function(L) {
     lua.lua_settop(L, 0);  /* remove eventual returns */
 
     input.value = "";
+
+    triggerEvent(output, 'change');
 };
 
 const L = lauxlib.luaL_newstate();
