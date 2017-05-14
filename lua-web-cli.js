@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 "use strict";
 
 window.WEB = true;
@@ -100,16 +101,6 @@ const doREPL = function(L) {
         if (lauxlib.luaL_loadbuffer(L, buffer, buffer.length, stdin) === lua.LUA_OK) {
             status = lua.LUA_OK;
         }
-    }
-    while (status === lua.LUA_ERRSYNTAX && lua.lua_tojsstring(L, -1).endsWith("<eof>")) {
-        /* continuation */
-        lua.lua_pop(L, 1);
-        lua.lua_getglobal(L, _PROMPT2);
-        out("\n");
-        prompt.innerHTML = ">>";
-        lua.lua_pop(L, 1);
-        let buffer = lua.to_luastring(input.value);
-        status = lauxlib.luaL_loadbuffer(L, buffer, buffer.length, stdin);
     }
     if (status === lua.LUA_OK) {
         status = docall(L, 0, lua.LUA_MULTRET);
