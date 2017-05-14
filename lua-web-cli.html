@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fengari</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:300,300i,400,400i,600,600i" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="github.css">
+    <link rel="stylesheet" type="text/css" href="lua-web-cli.css">
+</head>
+<body>
+
+    <div class="repl">
+        <pre>
+            <code class="lua" id="fengari-console"></code>
+        </pre>
+        <span class="fengari-input-container">
+            <span id="fengari-prompt">></span>
+            <input type="text" id="fengari-input">
+        </span>
+    </div>
+
+    <script src="node_modules/fengari/dist/fengari.js" type="text/javascript"></script>
+    <script src="lua-web-cli.js" type="text/javascript"></script>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/lua.min.js"></script>
+
+    <script>
+        hljs.initHighlightingOnLoad();
+
+        const fengari_console = document.getElementById('fengari-console');
+
+        fengari_console.onchange = function() {
+            hljs.highlightBlock(fengari_console);
+        };
+    </script>
+</body>
+</html>

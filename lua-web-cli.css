@@ -1,0 +1,26 @@
+
+.repl {
+    color: #333;
+    background: #f8f8f8;
+    padding: 0.5em;
+}
+
+pre {
+    margin: 0;
+}
+
+#fengari-console {
+    padding: 0;
+}
+
+#fengari-input {
+    font-family: monospace;
+    border: none;
+    color: #333;
+    background: #f8f8f8;
+    width: 80%;
+}
+
+.fengari-input-container {
+    font-family: monospace;
+}
