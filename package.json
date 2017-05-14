@@ -2,7 +2,6 @@
   "name": "fengari-web-cli",
   "version": "1.0.0",
   "description": "A Fengari REPL that runs in a web page",
-  "main": "index.js",
   "repository": "https://github.com/fengari-lua/fengari-web-cli.git",
   "author": "Benoit Giannangeli <giann008@gmail.com>",
   "license": "MIT",

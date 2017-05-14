@@ -38,7 +38,7 @@ const luaW_print = function(L) {
     }
 
     // Don't use console.log if Node
-    output.innerHTML += "\n" + lua.to_jsstring(str) + "\n";
+    output.innerHTML += lua.to_jsstring(str) + "\n";
     triggerEvent(output, 'change');
     return 0;
 };
@@ -81,7 +81,7 @@ const docall = function(L, narg, nres) {
 const doREPL = function(L) {
     lua.lua_getglobal(L, _PROMPT);
     prompt.innerHTML = ">";
-    output.innerHTML += "\n> " + input.value;
+    output.innerHTML += "\n> " + input.value + "\n";
     triggerEvent(output, 'change');
     lua.lua_pop(L, 1);
 

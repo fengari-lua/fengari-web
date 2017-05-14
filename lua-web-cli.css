@@ -17,10 +17,25 @@ pre {
     font-family: monospace;
     border: none;
     color: #333;
-    background: #f8f8f8;
-    width: 80%;
+    background: #f0f0f0;
+    width: 100%;
+    font-size: 13px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+#fengari-input:focus, #fengari-input:hover {
+    background: #e8e8e8;
 }
 
 .fengari-input-container {
     font-family: monospace;
+    position: relative;
+}
+
+#fengari-prompt {
+    position: absolute;
+    bottom: 0;
+    left: 3px;
 }
