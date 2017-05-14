@@ -6,6 +6,6 @@
   "author": "Benoit Giannangeli <giann008@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "fengari": "^0.0.1"
+    "fengari": "fengari-lua/fengari"
   }
 }

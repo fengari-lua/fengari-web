@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-fengari@^0.0.1:
+fengari@fengari-lua/fengari:
   version "0.0.1"
-  resolved "https://registry.yarnpkg.com/fengari/-/fengari-0.0.1.tgz#c4f8887ee738df8b8ac93c1e5feb856230323ef3"
+  resolved "https://codeload.github.com/fengari-lua/fengari/tar.gz/43238f0f3d12c0cf2424579f9562b73323021d61"
   dependencies:
     readline-sync "^1.4.7"
     seedrandom "^2.4.2"
@@ -24,7 +24,7 @@ seedrandom@^2.4.2:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/seedrandom/-/seedrandom-2.4.3.tgz#2438504dad33917314bff18ac4d794f16d6aaecc"
 
-"sprintf-js@github:giann/sprintf.js":
+sprintf-js@giann/sprintf.js:
   version "1.0.3"
   resolved "https://codeload.github.com/giann/sprintf.js/tar.gz/78f98d4f39ba27579992ea66cbf2b23265c796ba"
 
