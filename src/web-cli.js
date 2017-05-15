@@ -3,9 +3,12 @@
 
 window.WEB = true;
 
-const lua          = fengari.lua;
-const lauxlib      = fengari.lauxlib;
-const lualib       = fengari.lualib;
+const fengari  = require('fengari');
+const lua      = fengari.lua;
+const lauxlib  = fengari.lauxlib;
+const lualib   = fengari.lualib;
+const interop  = require('fengari-interop');
+
 
 const stdin = lua.to_luastring("=stdin");
 const _PROMPT = lua.to_luastring("_PROMPT");
@@ -20,7 +23,7 @@ const triggerEvent = function(el, type) {
     var e = document.createEvent('HTMLEvents');
     e.initEvent(type, false, true);
     el.dispatchEvent(e);
-}
+};
 
 const out = function(msg) {
     output.innerHTML += msg;
@@ -125,6 +128,11 @@ const L = lauxlib.luaL_newstate();
 output.innerHTML += lua.FENGARI_COPYRIGHT + "\n";
 /* open standard libraries */
 lualib.luaL_openlibs(L);
+
+// interop.luaopen_js(L);
+
+lauxlib.luaL_requiref(L, lua.to_luastring("js"), interop.luaopen_js, 1);
+lua.lua_pop(L, 1); /* remove lib */
 
 // Overwrite luaB_print
 lua.lua_register(L, lua.to_luastring("print"), luaW_print);
