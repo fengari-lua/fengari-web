@@ -16,11 +16,90 @@
             <code class="lua" id="fengari-console"></code>
         </pre>
         <div class="fengari-input-container">
-            <textarea id="fengari-input"></textarea>
+            <textarea id="fengari-input" rows="1"></textarea>
         </div>
     </div>
 
-    <script src="dist/fengari-web-cli.js" type="text/javascript"></script>
+    <script src="src/web-cli.lua" type="text/lua" id="cli.lua">
+        local document = js.global.document
+
+        local output = document:getElementById("fengari-console")
+        local input = document:getElementById("fengari-input")
+
+        assert(output and input)
+
+        local function triggerEvent(el, type)
+            local e = document:createEvent("HTMLEvents")
+            e:initEvent(type, false, true)
+            el:dispatchEvent(e)
+        end
+
+        local function out(msg)
+            output.textContent = output.textContent .. tostring(msg)
+            output.scrollTop = output.scrollHeight
+        end
+
+        print = function(...)
+            local toprint = table.pack(...)
+
+            for i = 1, toprint.n do
+                if i > 1 then
+                    out("\t")
+                end
+
+                out(tostring(toprint[i]))
+            end
+
+            out("\n")
+        end
+
+        local function doREPL()
+            out("\n> " .. input.value .. "\n")
+
+            if input.value.length == 0 then
+                return
+            end
+
+            local fn, err = load("return " .. input.value)
+
+            if not fn then
+                fn, err = load(input.value)
+            end
+
+            local results = false
+            if fn then
+                results = table.pack(pcall(fn))
+                
+                if results and results[1] and results.n > 1 then
+                    print(table.unpack(results, 2, results.n))
+                elseif results and not results[1] then
+                    error(results[2])
+                end
+            elseif err then
+                error(err)
+            end
+
+            input.value = ""
+
+            triggerEvent(output, "change")
+        end
+
+        input.onkeypress = function(this, e)
+            if not e then
+                e = js.global.event
+            end
+
+            local keyCode = e.keyCode or e.which
+            if keyCode == 13 and not e.shiftKey then
+                doREPL()
+                return false
+            end
+        end
+
+        print("Fengari 0.0.1  Copyright (C) 2017 Benoît Giannangeli\nBased on: Lua 5.3.4  Copyright (C) 1994-2017 Lua.org, PUC-Rio\n")
+    </script>
+
+    <script src="dist/fengari-web-cli-lua.js" type="text/javascript"></script>
 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/lua.min.js"></script>

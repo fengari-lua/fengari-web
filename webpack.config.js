@@ -14,10 +14,24 @@ module.exports = [
             library: 'fengari_web_cli'
         },
         plugins: [
-            new BabiliPlugin(),
             new webpack.DefinePlugin({
                 WEB: JSON.stringify(true),
-            })
+            }),
+            new BabiliPlugin()
+        ]
+    },
+    {
+        entry: './src/web-cli-lua.js',
+        output: {
+            path: path.resolve(__dirname, 'dist'),
+            filename: 'fengari-web-cli-lua.js',
+            library: 'fengari_web_cli_lua'
+        },
+        plugins: [
+            new webpack.DefinePlugin({
+                WEB: JSON.stringify(true),
+            }),
+            new BabiliPlugin()
         ]
     }
 ];
