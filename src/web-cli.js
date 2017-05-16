@@ -11,12 +11,9 @@ const interop  = require('fengari-interop');
 
 
 const stdin = lua.to_luastring("=stdin");
-const _PROMPT = lua.to_luastring("_PROMPT");
-const _PROMPT2 = lua.to_luastring("_PROMPT2");
 
 const output = document.getElementById('fengari-console');
 const input = document.getElementById('fengari-input');
-const prompt = document.getElementById('fengari-prompt');
 
 
 const triggerEvent = function(el, type) {
@@ -26,7 +23,7 @@ const triggerEvent = function(el, type) {
 };
 
 const out = function(msg) {
-    output.innerHTML += msg;
+    output.textContent += msg;
     output.scrollTop = output.scrollHeight;
 };
 
@@ -85,10 +82,7 @@ const docall = function(L, narg, nres) {
 };
 
 const doREPL = function(L) {
-    lua.lua_getglobal(L, _PROMPT);
-    prompt.innerHTML = ">";
     out("\n> " + input.value + "\n");
-    lua.lua_pop(L, 1);
 
     if (input.value.length === 0)
         return;
@@ -125,7 +119,7 @@ const doREPL = function(L) {
 
 const L = lauxlib.luaL_newstate();
 
-output.innerHTML += lua.FENGARI_COPYRIGHT + "\n";
+output.textContent += lua.FENGARI_COPYRIGHT + "\n";
 /* open standard libraries */
 lualib.luaL_openlibs(L);
 
@@ -140,7 +134,7 @@ lua.lua_register(L, lua.to_luastring("print"), luaW_print);
 input.onkeypress = function(e){
     if (!e) e = window.event;
     var keyCode = e.keyCode || e.which;
-    if (keyCode == '13'){
+    if (keyCode == '13' && !!!e.shiftKey) {
         doREPL(L);
         return false;
     }

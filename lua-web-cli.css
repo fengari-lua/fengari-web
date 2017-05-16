@@ -19,6 +19,7 @@ pre {
 
 #fengari-console {
     padding: 0;
+    font-size: 10px;
 }
 
 #fengari-input {
@@ -27,8 +28,7 @@ pre {
     color: #333;
     background: #f0f0f0;
     width: 100%;
-    font-size: 13px;
-    padding-left: 15px;
+    font-size: 10px;
     box-sizing: border-box;
     outline: none;
 }
@@ -40,10 +40,4 @@ pre {
 .fengari-input-container {
     font-family: monospace;
     position: relative;
-}
-
-#fengari-prompt {
-    position: absolute;
-    bottom: 0;
-    left: 3px;
 }
