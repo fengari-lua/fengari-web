@@ -21,6 +21,17 @@
     </div>
 
     <script src="src/web-cli.lua" type="text/lua" id="cli.lua">
+        local js = require "js"
+
+        -- Save references to lua baselib functions used
+        local _G = _G
+        local error = error
+        local load = load
+        local pack, unpack = table.pack, table.unpack
+        local tostring = tostring
+        local traceback = debug.traceback
+        local xpcall = xpcall
+
         local document = js.global.document
 
         local output = document:getElementById("fengari-console")
@@ -39,8 +50,8 @@
             output.scrollTop = output.scrollHeight
         end
 
-        print = function(...)
-            local toprint = table.pack(...)
+        _G.print = function(...)
+            local toprint = pack(...)
 
             for i = 1, toprint.n do
                 if i > 1 then
@@ -66,16 +77,16 @@
             end
 
             if fn then
-                local results = table.pack(xpcall(fn, debug.traceback))
+                local results = pack(xpcall(fn, traceback))
                 if results[1] then
                     if results.n > 1 then
-                        print(table.unpack(results, 2, results.n))
+                        _G.print(unpack(results, 2, results.n))
                     end
                 else
-                    print(results[2])
+                    _G.print(results[2])
                 end
             else
-                print(err)
+                _G.print(err)
             end
 
             input.value = ""
@@ -95,7 +106,7 @@
             end
         end
 
-        print(_COPYRIGHT)
+        _G.print(_G._COPYRIGHT)
     </script>
 
     <script src="dist/fengari-web-cli-lua.js" type="text/javascript"></script>
