@@ -2,7 +2,6 @@ local js = require "js"
 
 -- Save references to lua baselib functions used
 local _G = _G
-local error = error
 local load = load
 local pack, unpack = table.pack, table.unpack
 local tostring = tostring
