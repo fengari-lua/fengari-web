@@ -44,7 +44,7 @@ local function doREPL()
         local line = document:createElement("span")
         line:appendChild(document:createTextNode(prompt.textContent))
         local item = document:createElement("span")
-        item.class = "lua"
+        item.className = "lua"
         item.style.padding = "0"
         item.style.display = "inline"
         item.textContent = input.value
