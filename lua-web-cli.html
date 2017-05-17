@@ -66,16 +66,16 @@
                 fn, err = load(input.value)
             end
 
-            local results = false
             if fn then
-                results = table.pack(pcall(fn))
-
-                if results and results[1] and results.n > 1 then
-                    print(table.unpack(results, 2, results.n))
-                elseif results and not results[1] then
+                local results = table.pack(pcall(fn))
+                if results[1] then
+                    if results.n > 1 then
+                        print(table.unpack(results, 2, results.n))
+                    end
+                else
                     print(results[2])
                 end
-            elseif err then
+            else
                 print(err)
             end
 
