@@ -12,13 +12,14 @@
 <body>
 
     <div class="repl">
-        <pre>
-            <code class="lua" id="fengari-console"></code>
-        </pre>
+        <code id="fengari-console"></code>
         <div class="fengari-input-container">
-            <textarea id="fengari-input" rows="1"></textarea>
+            <textarea class="lua" id="fengari-input" rows="1"></textarea>
         </div>
     </div>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/lua.min.js"></script>
 
     <script src="src/web-cli.lua" type="text/lua" id="cli.lua">
         local js = require "js"
@@ -33,6 +34,7 @@
         local xpcall = xpcall
 
         local document = js.global.document
+        local hljs = js.global.hljs
 
         local output = document:getElementById("fengari-console")
         local input = document:getElementById("fengari-input")
@@ -45,27 +47,38 @@
             el:dispatchEvent(e)
         end
 
-        local function out(msg)
-            output.textContent = output.textContent .. tostring(msg)
-            output.scrollTop = output.scrollHeight
-        end
-
         _G.print = function(...)
             local toprint = pack(...)
 
-            for i = 1, toprint.n do
-                if i > 1 then
-                    out("\t")
-                end
+            local line = document:createElement("span")
+            output:appendChild(line)
+            output:appendChild(document:createElement("br"))
 
-                out(tostring(toprint[i]))
+            for i = 1, toprint.n do
+                local item = document:createElement("pre")
+                item.style["white-space"] = "pre-wrap"
+                item:appendChild(document:createTextNode(tostring(toprint[i])))
+                line:appendChild(item)
             end
 
-            out("\n")
+            output.scrollTop = output.scrollHeight
         end
 
         local function doREPL()
-            out("\n> " .. input.value .. "\n")
+            do
+                local line = document:createElement("span")
+                line:appendChild(document:createTextNode(_G._PROMPT or "> "))
+                local item = document:createElement("span")
+                item.class = "lua"
+                item.style.padding = "0"
+                item.style.display = "inline"
+                item.textContent = input.value
+                hljs:highlightBlock(item)
+                line:appendChild(item)
+                output:appendChild(line)
+                output:appendChild(document:createElement("br"))
+                output.scrollTop = output.scrollHeight
+            end
 
             if input.value.length == 0 then
                 return
@@ -94,7 +107,7 @@
             triggerEvent(output, "change")
         end
 
-        input.onkeypress = function(this, e)
+        function input:onkeypress(e)
             if not e then
                 e = js.global.event
             end
@@ -108,20 +121,6 @@
 
         _G.print(_G._COPYRIGHT)
     </script>
-
     <script src="dist/fengari-web-cli-lua.js" type="text/javascript"></script>
-
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/lua.min.js"></script>
-
-    <script>
-        hljs.initHighlightingOnLoad();
-
-        const fengari_console = document.getElementById('fengari-console');
-
-        fengari_console.onchange = function() {
-            hljs.highlightBlock(fengari_console);
-        };
-    </script>
 </body>
 </html>
