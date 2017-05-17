@@ -28,7 +28,6 @@ _G.print = function(...)
 
     local line = document:createElement("span")
     output:appendChild(line)
-    output:appendChild(document:createElement("br"))
 
     for i = 1, toprint.n do
         local item = document:createElement("pre")
