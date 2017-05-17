@@ -31,36 +31,40 @@ const run_lua_script = function(code, chunkname) {
 	}
 };
 
-const handle_xhr_response = function(tag, xhr) {
-	if (xhr.status == 200) {
-		let code = xhr.response;
-		if (typeof code === "string") {
-			code = lua.to_luastring(code);
-		} else { /* ArrayBuffer */
-			code = Array.from(new Uint8Array(code));
-		}
-		let chunkname = "@"+tag.src;
-		run_lua_script(code, lua.to_luastring(chunkname));
+const crossorigin_to_credentials = function(crossorigin) {
+	switch(crossorigin) {
+		case "anonymous": return "omit";
+		case "use-credentials": return "include";
+		default: return "same-origin";
 	}
 };
 
 const run_lua_script_tag = function(tag) {
 	if (tag.src) {
-		let xhr = new XMLHttpRequest();
+		let chunkname = "@"+tag.src;
 		/* JS script tags are async after document has loaded */
 		if (document.readyState === "complete" || tag.async) {
-			xhr.responseType = "arraybuffer";
-			xhr.onreadystatechange = function() {
-				if (this.readyState == 4) {
-					handle_xhr_response(tag, this);
+			fetch(tag.src, {
+				method: "GET",
+				credentials: crossorigin_to_credentials(tag.crossorigin),
+				redirect: "follow",
+				integrity: tag.integrity
+			}).then(function(resp) {
+				if (resp.ok) {
+					resp.arrayBuffer().then(function(buffer) {
+						let code = Array.from(new Uint8Array(buffer));
+						run_lua_script(code, lua.to_luastring(chunkname));
+					});
 				}
-			};
-			xhr.open("GET", tag.src, true);
-			xhr.send();
+			});
 		} else {
+			/* Needs to be synchronous: use an XHR */
+			let xhr = new XMLHttpRequest();
 			xhr.open("GET", tag.src, false);
 			xhr.send();
-			handle_xhr_response(tag, xhr);
+			let code = xhr.response;
+			/* TODO: subresource integrity check? */
+			run_lua_script(lua.to_luastring(code), lua.to_luastring(chunkname));
 		}
 	} else {
 		let code = tag.innerHTML;
