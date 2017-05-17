@@ -2,7 +2,7 @@
 .repl {
     color: #333;
     background: #f8f8f8;
-    padding: 0.5em;
+    padding: 0;
     text-align: left;
     width: 600px;
     margin: auto;
@@ -18,32 +18,33 @@ pre {
 }
 
 #fengari-console {
-    padding: 0;
+    padding: 0.5em;
     font-size: 11px;
     display: block;
 }
 
-#fengari-prompt {
-    white-space: pre-wrap;
+.fengari-input-container {
+    display: flex;
 }
 
-#fengari-input {
-    font-family: monospace;
+.fengari-input-container > * {
+    outline: none;
     border: none;
+    white-space: pre-wrap;
+    font-family: monospace;
     color: #333;
     background: #f0f0f0;
     font-size: 11px;
-    box-sizing: border-box;
-    outline: none;
-    flex: 1
+    min-height: 11px; /* minimum one line */
+    padding: 0;
+    margin: 0;
 }
 
-#fengari-input:focus, #fengari-input:hover {
+#fengari-input {
+    flex: 1;
+    height: 11px; /* start off one line tall */
+}
+
+#fengari-input:focus, #fengari-input:hover, .fengari-input-container:hover {
     background: #e8e8e8;
-}
-
-.fengari-input-container {
-    font-family: monospace;
-    position: relative;
-    display: flex;
 }
