@@ -22,15 +22,19 @@ pre {
     font-size: 11px;
 }
 
+#fengari-prompt {
+    white-space: pre-wrap;
+}
+
 #fengari-input {
     font-family: monospace;
     border: none;
     color: #333;
     background: #f0f0f0;
-    width: 100%;
     font-size: 11px;
     box-sizing: border-box;
     outline: none;
+    flex: 1
 }
 
 #fengari-input:focus, #fengari-input:hover {
@@ -40,4 +44,5 @@ pre {
 .fengari-input-container {
     font-family: monospace;
     position: relative;
+    display: flex;
 }
