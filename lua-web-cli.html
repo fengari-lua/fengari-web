@@ -60,10 +60,9 @@
                 return
             end
 
-            local fn, err = load("return " .. input.value)
-
+            local fn, err = load("return " .. input.value, "stdin")
             if not fn then
-                fn, err = load(input.value)
+                fn, err = load(input.value, "stdin")
             end
 
             if fn then
