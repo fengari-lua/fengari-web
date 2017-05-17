@@ -69,14 +69,14 @@
             local results = false
             if fn then
                 results = table.pack(pcall(fn))
-                
+
                 if results and results[1] and results.n > 1 then
                     print(table.unpack(results, 2, results.n))
                 elseif results and not results[1] then
-                    error(results[2])
+                    print(results[2])
                 end
             elseif err then
-                error(err)
+                print(err)
             end
 
             input.value = ""
