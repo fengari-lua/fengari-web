@@ -42,10 +42,11 @@ local function doREPL()
     do
         local line = document:createElement("span")
         line:appendChild(document:createTextNode(prompt.textContent))
-        local item = document:createElement("span")
+        local item = document:createElement("pre")
         item.className = "lua"
         item.style.padding = "0"
         item.style.display = "inline"
+        item.style["white-space"] = "pre-wrap"
         item.textContent = input.value
         hljs:highlightBlock(item)
         line:appendChild(item)
