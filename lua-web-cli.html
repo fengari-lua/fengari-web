@@ -66,7 +66,7 @@
             end
 
             if fn then
-                local results = table.pack(pcall(fn))
+                local results = table.pack(xpcall(fn, debug.traceback))
                 if results[1] then
                     if results.n > 1 then
                         print(table.unpack(results, 2, results.n))
