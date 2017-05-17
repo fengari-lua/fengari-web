@@ -23,12 +23,14 @@ const run_lua_script_tag = function(tag) {
 	let code = tag.innerHTML;
 	let chunkname = tag.src ? ("@"+tag.src) : tag.id ? ("="+tag.id) : code;
 	let ok = lauxlib.luaL_loadbuffer(L, lua.to_luastring(code), null, lua.to_luastring(chunkname));
-	if (ok !== lua.LUA_OK) {
-		let msg = lua.lua_tojsstring(L, -1);
-		lua.lua_pop(L, 1);
-		throw Error(msg);
+	if (ok === lua.LUA_OK) {
+		ok = lua.lua_pcall(L, 0, 0, 0); /* TODO: use message handler to add traceback */
 	}
-	lua.lua_call(L, 0, 0, 0);
+	if (ok !== lua.LUA_OK) {
+		let msg = lauxlib.luaL_tolstring(L, -1);
+		lua.lua_pop(L, 1);
+		console.error(lua.to_jsstring(msg));
+	}
 };
 
 /* watch for new <script type="text/lua"> tags added to document */
