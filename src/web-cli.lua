@@ -22,6 +22,10 @@ local function triggerEvent(el, type)
     el:dispatchEvent(e)
 end
 
+local history = {}
+local historyIndex = nil
+local historyLimit = 100
+
 _G.print = function(...)
     local toprint = pack(...)
 
@@ -59,9 +63,15 @@ local function doREPL()
         return
     end
 
-    local fn, err = load("return " .. input.value, "stdin")
+    local line = input.value
+    table.insert(history, line)
+    if #history > historyLimit then
+        table.remove(history, 1)
+    end
+
+    local fn, err = load("return " .. line, "stdin")
     if not fn then
-        fn, err = load(input.value, "stdin")
+        fn, err = load(line, "stdin")
     end
 
     if fn then
@@ -83,14 +93,24 @@ local function doREPL()
     triggerEvent(output, "change")
 end
 
-function input:onkeypress(e)
+function input:onkeydown(e)
     if not e then
         e = js.global.event
     end
 
-    local keyCode = e.keyCode or e.which
-    if keyCode == 13 and not e.shiftKey then
+    local key = e.key or e.which
+    if key == "Enter" and not e.shiftKey then
         doREPL()
+        return false
+    elseif key == "ArrowUp" then
+        historyIndex = historyIndex and historyIndex - 1 or #history
+        historyIndex = historyIndex > 0 and historyIndex or 1
+        input.value = history[historyIndex]
+        return false
+    elseif key == "ArrowDown" then
+        historyIndex = historyIndex and historyIndex + 1
+        historyIndex = historyIndex <= #history and historyIndex or #history
+        input.value = history[historyIndex]
         return false
     end
 end
