@@ -10,6 +10,7 @@ local xpcall = xpcall
 
 local document = js.global.document
 local hljs = js.global.hljs
+local rangy = js.global.rangy
 
 local output = document:getElementById("fengari-console")
 local prompt = document:getElementById("fengari-prompt")
@@ -51,7 +52,7 @@ local function doREPL()
         item.style.padding = "0"
         item.style.display = "inline"
         item.style["white-space"] = "pre-wrap"
-        item.textContent = input.value
+        item.textContent = input.textContent
         hljs:highlightBlock(item)
         line:appendChild(item)
         output:appendChild(line)
@@ -59,11 +60,11 @@ local function doREPL()
         output.scrollTop = output.scrollHeight
     end
 
-    if input.value.length == 0 then
+    if input.textContent.length == 0 then
         return
     end
 
-    local line = input.value
+    local line = input.textContent
     table.insert(history, line)
     if #history > historyLimit then
         table.remove(history, 1)
@@ -87,13 +88,17 @@ local function doREPL()
         _G.print(err)
     end
 
-    input.value = ""
+    input.textContent = ""
     prompt.textContent = _G._PROMPT or "> "
 
     triggerEvent(output, "change")
 end
 
 function input:onkeydown(e)
+    local position = rangy:saveSelection()
+    hljs:highlightBlock(input)
+    rangy:restoreSelection(position)
+
     if not e then
         e = js.global.event
     end
@@ -105,12 +110,12 @@ function input:onkeydown(e)
     elseif key == "ArrowUp" then
         historyIndex = historyIndex and historyIndex - 1 or #history
         historyIndex = historyIndex > 0 and historyIndex or 1
-        input.value = history[historyIndex]
+        input.textContent = history[historyIndex]
         return false
     elseif key == "ArrowDown" then
         historyIndex = historyIndex and historyIndex + 1
         historyIndex = historyIndex <= #history and historyIndex or #history
-        input.value = history[historyIndex]
+        input.textContent = history[historyIndex]
         return false
     end
 end
