@@ -7,20 +7,6 @@ const BabiliPlugin = require("babili-webpack-plugin");
 
 module.exports = [
     {
-        entry: './src/web-cli.js',
-        output: {
-            path: path.resolve(__dirname, 'dist'),
-            filename: 'fengari-web-cli.js',
-            library: 'fengari_web_cli'
-        },
-        plugins: [
-            new webpack.DefinePlugin({
-                WEB: JSON.stringify(true),
-            }),
-            new BabiliPlugin()
-        ]
-    },
-    {
         entry: './src/web-cli-lua.js',
         output: {
             path: path.resolve(__dirname, 'dist'),

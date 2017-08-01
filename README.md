@@ -1,2 +1,3 @@
 # fengari-web-cli
-A Fengari REPL that runs in a web page
+
+Provides anything you need to run [Fengari](https://github.com/fengari-lua/fengari) in the browser.
