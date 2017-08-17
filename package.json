@@ -13,8 +13,8 @@
         "fengari-interop": "fengari-lua/fengari-interop"
     },
     "devDependencies": {
-        "babili-webpack-plugin": "^0.0.11",
-        "webpack": "^2.5.1"
+        "babili-webpack-plugin": "^0.1.2",
+        "webpack": "^3.5.5"
     },
     "scripts": {
         "build": "webpack"
