@@ -970,13 +970,13 @@ fast-deep-equal@^1.0.0:
 
 fengari-interop@fengari-lua/fengari-interop:
   version "0.0.1"
-  resolved "https://codeload.github.com/fengari-lua/fengari-interop/tar.gz/e8b3ace2e21cd6ab835882a96efcd030ba8eec9d"
+  resolved "https://codeload.github.com/fengari-lua/fengari-interop/tar.gz/5421ac5f567122d54196816a96ad5847e407d7e7"
   dependencies:
     fengari fengari-lua/fengari
 
 fengari@fengari-lua/fengari:
   version "0.0.1"
-  resolved "https://codeload.github.com/fengari-lua/fengari/tar.gz/0186ad3e5be4cbf7738a4cc2f5bb7679f16e5800"
+  resolved "https://codeload.github.com/fengari-lua/fengari/tar.gz/1c9d5cce74d26d1bfbf24f270f8e92c70cfa0b28"
   dependencies:
     readline-sync "^1.4.7"
     seedrandom "^2.4.2"
