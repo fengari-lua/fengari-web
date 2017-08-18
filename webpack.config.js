@@ -2,7 +2,6 @@
 
 const webpack = require('webpack');
 const path = require('path');
-const BabiliPlugin = require("babili-webpack-plugin");
 
 module.exports = [
     {
@@ -14,11 +13,25 @@ module.exports = [
             library: 'fengari_web_cli_lua'
         },
         node: false,
+        module: {
+            rules: [
+                {
+                    test: [/\.js$/],
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [['env', {
+                            "targets": {
+                                "browsers": ["last 2 versions", "safari >= 7"]
+                            }
+                        }]]
+                    }
+                }
+            ]
+        },
         plugins: [
             new webpack.DefinePlugin({
                 WEB: JSON.stringify(true),
-            }),
-            new BabiliPlugin()
+            })
         ]
     }
 ];
