@@ -9,7 +9,7 @@ module.exports = [
         target: 'web',
         output: {
             path: path.resolve(__dirname, 'dist'),
-            filename: 'fengari-web-cli-lua.js'
+            filename: 'fengari-web-cli.js'
         },
         node: false,
         module: {
