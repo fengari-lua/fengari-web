@@ -18,5 +18,8 @@
     },
     "scripts": {
         "build": "webpack"
+    },
+    "jshintConfig": {
+        "esversion": 6
     }
 }
