@@ -1173,10 +1173,9 @@ fengari-interop@fengari-lua/fengari-interop:
 
 fengari@fengari-lua/fengari:
   version "0.0.1"
-  resolved "https://codeload.github.com/fengari-lua/fengari/tar.gz/1c9d5cce74d26d1bfbf24f270f8e92c70cfa0b28"
+  resolved "https://codeload.github.com/fengari-lua/fengari/tar.gz/36f446c3d43a90063962f8af790e7b58b08765f5"
   dependencies:
     readline-sync "^1.4.7"
-    seedrandom "^2.4.2"
     sprintf-js "^1.1.1"
     strftime "^0.10.0"
     tmp "0.0.31"
@@ -2219,10 +2218,6 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
 safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
-
-seedrandom@^2.4.2:
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/seedrandom/-/seedrandom-2.4.3.tgz#2438504dad33917314bff18ac4d794f16d6aaecc"
 
 "semver@2 || 3 || 4 || 5", semver@^5.3.0:
   version "5.4.1"
