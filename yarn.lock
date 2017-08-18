@@ -508,6 +508,12 @@ babel-plugin-transform-regenerator@^6.22.0:
   dependencies:
     regenerator-transform "^0.10.0"
 
+babel-plugin-transform-runtime@^6.23.0:
+  version "6.23.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-runtime/-/babel-plugin-transform-runtime-6.23.0.tgz#88490d446502ea9b8e7efb0fe09ec4d99479b1ee"
+  dependencies:
+    babel-runtime "^6.22.0"
+
 babel-plugin-transform-strict-mode@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-strict-mode/-/babel-plugin-transform-strict-mode-6.24.1.tgz#d5faf7aa578a65bbe591cf5edae04a0c67020758"
@@ -1173,7 +1179,7 @@ fengari-interop@fengari-lua/fengari-interop:
 
 fengari@fengari-lua/fengari:
   version "0.0.1"
-  resolved "https://codeload.github.com/fengari-lua/fengari/tar.gz/36f446c3d43a90063962f8af790e7b58b08765f5"
+  resolved "https://codeload.github.com/fengari-lua/fengari/tar.gz/22220c5992ed660ec6ed805b4275f9ec1378f60c"
   dependencies:
     readline-sync "^1.4.7"
     sprintf-js "^1.1.1"

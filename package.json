@@ -9,6 +9,7 @@
     ],
     "license": "MIT",
     "dependencies": {
+        "babel-plugin-transform-runtime": "^6.23.0",
         "fengari": "fengari-lua/fengari",
         "fengari-interop": "fengari-lua/fengari-interop"
     },
