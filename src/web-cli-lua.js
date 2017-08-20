@@ -77,6 +77,8 @@ const run_lua_script_tag = function(tag) {
 						let code = Array.from(new Uint8Array(buffer));
 						run_lua_script(tag, code, chunkname);
 					});
+				} else {
+					tag.dispatchEvent(new Event("error"));
 				}
 			});
 		} else {
@@ -84,9 +86,13 @@ const run_lua_script_tag = function(tag) {
 			let xhr = new XMLHttpRequest();
 			xhr.open("GET", tag.src, false);
 			xhr.send();
-			/* TODO: subresource integrity check? */
-			let code = lua.to_luastring(xhr.response);
-			run_lua_script(tag, code, chunkname);
+			if (xhr.status >= 200 && xhr.status < 300) {
+				/* TODO: subresource integrity check? */
+				let code = lua.to_luastring(xhr.response);
+				run_lua_script(tag, code, chunkname);
+			} else {
+				tag.dispatchEvent(new Event("error"));
+			}
 		}
 	} else {
 		let code = lua.to_luastring(tag.innerHTML);
