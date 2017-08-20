@@ -31,6 +31,21 @@ const msghandler = function(L) {
 
 const run_lua_script = function(tag, code, chunkname) {
 	let ok = lauxlib.luaL_loadbuffer(L, code, null, chunkname);
+	if (ok === lua.LUA_ERRSYNTAX) {
+		let msg = lua.lua_tojsstring(L, -1);
+		lua.lua_pop(L, 1);
+		let filename = tag.src?tag.src:document.location;
+		let lineno = void 0; /* TODO: extract out of msg */
+		let syntaxerror = new SyntaxError(msg, filename, lineno);
+		let e = new ErrorEvent("error", {
+			message: msg,
+			error: syntaxerror,
+			filename: filename,
+			lineno: lineno
+		});
+		window.dispatchEvent(e);
+		return;
+	}
 	if (ok === lua.LUA_OK) {
 		/* insert message handler below function */
 		let base = lua.lua_gettop(L);
