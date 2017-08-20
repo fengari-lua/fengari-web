@@ -29,14 +29,22 @@ const msghandler = function(L) {
 	return 1;
 }
 
-const run_lua_script = function(code, chunkname) {
+const run_lua_script = function(tag, code, chunkname) {
 	let ok = lauxlib.luaL_loadbuffer(L, code, null, chunkname);
 	if (ok === lua.LUA_OK) {
 		/* insert message handler below function */
 		let base = lua.lua_gettop(L);
 		lua.lua_pushcfunction(L, msghandler);
 		lua.lua_insert(L, base);
+		/* set document.currentScript.
+		   We can't set it normally; but we can create a getter for it, then remove the getter */
+		Object.defineProperty(document, 'currentScript', {
+			value: tag,
+			configurable: true
+		});
 		ok = lua.lua_pcall(L, 0, 0, base);
+		/* Remove the currentScript getter installed above; this restores normal behaviour */
+		delete document.currentScript;
 	}
 	if (ok !== lua.LUA_OK) {
 		let msg = lauxlib.luaL_tolstring(L, -1);
@@ -67,7 +75,7 @@ const run_lua_script_tag = function(tag) {
 				if (resp.ok) {
 					resp.arrayBuffer().then(function(buffer) {
 						let code = Array.from(new Uint8Array(buffer));
-						run_lua_script(code, lua.to_luastring(chunkname));
+						run_lua_script(tag, code, lua.to_luastring(chunkname));
 					});
 				}
 			});
@@ -78,12 +86,12 @@ const run_lua_script_tag = function(tag) {
 			xhr.send();
 			let code = xhr.response;
 			/* TODO: subresource integrity check? */
-			run_lua_script(lua.to_luastring(code), lua.to_luastring(chunkname));
+			run_lua_script(tag, lua.to_luastring(code), lua.to_luastring(chunkname));
 		}
 	} else {
 		let code = tag.innerHTML;
 		let chunkname = tag.id ? ("="+tag.id) : code;
-		run_lua_script(lua.to_luastring(code), lua.to_luastring(chunkname));
+		run_lua_script(tag, lua.to_luastring(code), lua.to_luastring(chunkname));
 	}
 };
 
