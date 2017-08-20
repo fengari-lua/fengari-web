@@ -16,10 +16,27 @@ lua.lua_pop(L, 1); /* remove lib */
 lua.lua_pushstring(L, lua.to_luastring(lua.FENGARI_COPYRIGHT));
 lua.lua_setglobal(L, lua.to_luastring("_COPYRIGHT"));
 
+const msghandler = function(L) {
+	let msg = lua.lua_tostring(L, 1);
+	if (msg === null) {
+		if (lauxlib.luaL_callmeta(L, 1, lua.to_luastring("__tostring")) &&  /* does it have a metamethod */
+			lua.lua_type(L, -1) == lua.LUA_TSTRING)  /* that produces a string? */
+		return 1;  /* that is the message */
+	else
+		msg = lua.lua_pushfstring(L, lua.to_luastring("(error object is a %s value)"), lauxlib.luaL_typename(L, 1));
+	}
+	lauxlib.luaL_traceback(L, L, msg, 1);  /* append a standard traceback */
+	return 1;
+}
+
 const run_lua_script = function(code, chunkname) {
 	let ok = lauxlib.luaL_loadbuffer(L, code, null, chunkname);
 	if (ok === lua.LUA_OK) {
-		ok = lua.lua_pcall(L, 0, 0, 0); /* TODO: use message handler to add traceback */
+		/* insert message handler below function */
+		let base = lua.lua_gettop(L);
+		lua.lua_pushcfunction(L, msghandler);
+		lua.lua_insert(L, base);
+		ok = lua.lua_pcall(L, 0, 0, base);
 	}
 	if (ok !== lua.LUA_OK) {
 		let msg = lauxlib.luaL_tolstring(L, -1);
