@@ -63,7 +63,7 @@ const crossorigin_to_credentials = function(crossorigin) {
 
 const run_lua_script_tag = function(tag) {
 	if (tag.src) {
-		let chunkname = "@"+tag.src;
+		let chunkname = lua.to_luastring("@"+tag.src);
 		/* JS script tags are async after document has loaded */
 		if (document.readyState === "complete" || tag.async) {
 			fetch(tag.src, {
@@ -75,7 +75,7 @@ const run_lua_script_tag = function(tag) {
 				if (resp.ok) {
 					resp.arrayBuffer().then(function(buffer) {
 						let code = Array.from(new Uint8Array(buffer));
-						run_lua_script(tag, code, lua.to_luastring(chunkname));
+						run_lua_script(tag, code, chunkname);
 					});
 				}
 			});
@@ -84,14 +84,14 @@ const run_lua_script_tag = function(tag) {
 			let xhr = new XMLHttpRequest();
 			xhr.open("GET", tag.src, false);
 			xhr.send();
-			let code = xhr.response;
 			/* TODO: subresource integrity check? */
-			run_lua_script(tag, lua.to_luastring(code), lua.to_luastring(chunkname));
+			let code = lua.to_luastring(xhr.response);
+			run_lua_script(tag, code, chunkname);
 		}
 	} else {
-		let code = tag.innerHTML;
-		let chunkname = tag.id ? ("="+tag.id) : code;
-		run_lua_script(tag, lua.to_luastring(code), lua.to_luastring(chunkname));
+		let code = lua.to_luastring(tag.innerHTML);
+		let chunkname = tag.id ? lua.to_luastring("="+tag.id) : code;
+		run_lua_script(tag, code, chunkname);
 	}
 };
 
