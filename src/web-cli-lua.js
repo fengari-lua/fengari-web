@@ -59,6 +59,8 @@ const run_lua_script = function(tag, code, chunkname) {
 		ok = lua.lua_pcall(L, 0, 0, base);
 		/* Remove the currentScript getter installed above; this restores normal behaviour */
 		delete document.currentScript;
+		/* Remove message handler */
+		lua.lua_remove(L, base);
 		/* Check if normal error that msghandler would have handled */
 		if (ok === lua.LUA_ERRRUN) {
 			e = interop.checkjs(L, -1);
