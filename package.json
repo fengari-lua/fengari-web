@@ -1,8 +1,8 @@
 {
-    "name": "fengari-web-cli",
+    "name": "fengari-web",
     "version": "1.0.1",
-    "description": "A Fengari REPL that runs in a web page",
-    "repository": "https://github.com/fengari-lua/fengari-web-cli.git",
+    "description": "Provides anything you need to run Fengari in the browser",
+    "repository": "https://github.com/fengari-lua/fengari-web.git",
     "contributors": [
         "Benoit Giannangeli <giann008@gmail.com>",
         "Daurnimator <quae@daurnimator.com>"

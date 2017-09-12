@@ -5,11 +5,11 @@ const path = require('path');
 
 module.exports = [
     {
-        entry: './src/web-cli-lua.js',
+        entry: './src/fengari-web.js',
         target: 'web',
         output: {
             path: path.resolve(__dirname, 'dist'),
-            filename: 'fengari-web-cli.js'
+            filename: 'fengari-web.js'
         },
         node: false,
         module: {
