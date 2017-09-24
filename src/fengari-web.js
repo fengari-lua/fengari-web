@@ -128,14 +128,26 @@ const run_lua_script_tag = function(tag) {
 	}
 };
 
-/* watch for new <script type="text/lua"> tags added to document */
+const contentTypeRegexp = /^(.*?\/.*?)([\t ]*;.*)?$/;
+const maybe_run_lua_script_tag = function(tag) {
+	if (tag.tagName !== "SCRIPT")
+		return;
+
+	/* strip off mime type parameters */
+	const contentTypeMatch = contentTypeRegexp.exec(tag.type);
+	if (contentTypeMatch) {
+		const mimetype = contentTypeMatch[1];
+		if (mimetype === "application/lua" || mimetype === "text/lua") {
+			run_lua_script_tag(tag);
+		}
+	}
+};
+
+/* watch for new script tags added to document */
 (new MutationObserver(function(records, observer) {
 	for (let r=0; r<records.length; r++) {
 		for (let i=0; i<records[r].addedNodes.length; i++) {
-			let tag = records[r].addedNodes[i];
-			if (tag.tagName == "SCRIPT" && (tag.type == "application/lua" || tag.type == "text/lua")) {
-				run_lua_script_tag(tag);
-			}
+			maybe_run_lua_script_tag(records[r].addedNodes[j]);
 		}
 	}
 })).observe(document, {
@@ -143,5 +155,9 @@ const run_lua_script_tag = function(tag) {
 	subtree: true
 });
 
-/* run existing <script type="text/lua"> tags */
-Array.prototype.forEach.call(document.querySelectorAll('script[type="application/lua"] script[type="text/lua"]'), run_lua_script_tag);
+/* the query selector here is slightly liberal,
+   more checks occur in maybe_run_lua_script_tag */
+const selector = 'script[type^="application/lua"] script[type^="text/lua"]';
+
+/* try to run existing script tags */
+Array.prototype.forEach.call(document.querySelectorAll(selector), maybe_run_lua_script_tag);
