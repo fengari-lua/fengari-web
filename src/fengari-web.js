@@ -29,7 +29,7 @@ const msghandler = function(L) {
 		lineno: ar.currentline > 0 ? ar.currentline : void 0
 	}));
 	return 1;
-}
+};
 
 const run_lua_script = function(tag, code, chunkname) {
 	let ok = lauxlib.luaL_loadbuffer(L, code, null, chunkname);
@@ -130,17 +130,17 @@ const run_lua_script_tag = function(tag) {
 
 /* watch for new <script type="text/lua"> tags added to document */
 (new MutationObserver(function(records, observer) {
-    for (let r=0; r<records.length; r++) {
-        for (let i=0; i<records[r].addedNodes.length; i++) {
-            let tag = records[r].addedNodes[i];
-            if (tag.tagName == "SCRIPT" && tag.type == "text/lua") {
-                run_lua_script_tag(tag);
-            }
-        }
-    }
+	for (let r=0; r<records.length; r++) {
+		for (let i=0; i<records[r].addedNodes.length; i++) {
+			let tag = records[r].addedNodes[i];
+			if (tag.tagName == "SCRIPT" && tag.type == "text/lua") {
+				run_lua_script_tag(tag);
+			}
+		}
+	}
 })).observe(document, {
-    childList: true,
-    subtree: true
+	childList: true,
+	subtree: true
 });
 
 /* run existing <script type="text/lua"> tags */
