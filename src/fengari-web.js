@@ -133,7 +133,7 @@ const run_lua_script_tag = function(tag) {
 	for (let r=0; r<records.length; r++) {
 		for (let i=0; i<records[r].addedNodes.length; i++) {
 			let tag = records[r].addedNodes[i];
-			if (tag.tagName == "SCRIPT" && tag.type == "text/lua") {
+			if (tag.tagName == "SCRIPT" && (tag.type == "application/lua" || tag.type == "text/lua")) {
 				run_lua_script_tag(tag);
 			}
 		}
@@ -144,4 +144,4 @@ const run_lua_script_tag = function(tag) {
 });
 
 /* run existing <script type="text/lua"> tags */
-Array.prototype.forEach.call(document.querySelectorAll('script[type=\"text\/lua\"]'), run_lua_script_tag);
+Array.prototype.forEach.call(document.querySelectorAll('script[type="application/lua"] script[type="text/lua"]'), run_lua_script_tag);
