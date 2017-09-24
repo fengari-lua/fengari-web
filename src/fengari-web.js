@@ -145,9 +145,10 @@ const maybe_run_lua_script_tag = function(tag) {
 
 /* watch for new script tags added to document */
 (new MutationObserver(function(records, observer) {
-	for (let r=0; r<records.length; r++) {
-		for (let i=0; i<records[r].addedNodes.length; i++) {
-			maybe_run_lua_script_tag(records[r].addedNodes[j]);
+	for (let i=0; i<records.length; i++) {
+		let record = records[i];
+		for (let j=0; j<record.addedNodes.length; j++) {
+			maybe_run_lua_script_tag(record.addedNodes[j]);
 		}
 	}
 })).observe(document, {
