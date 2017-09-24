@@ -21,14 +21,14 @@ Load fengari-web in your web page:
 <script src="dist/fengari-web.js" type="text/javascript"></script>
 ```
 
-Now any script of type `text/lua` will be run by fengari:
+Now any script of type `application/lua` will be run by fengari:
 
 ```html
-<script type="text/lua">
+<script type="application/lua">
 print("hello world !")
 </script>
 
-<script src="/my-script.lua" type="text/lua" async></script>
+<script src="/my-script.lua" type="application/lua" async></script>
 ```
 
 Note that if you use a `src` tag, it is strongly recommended for it to be [`async`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-async).
