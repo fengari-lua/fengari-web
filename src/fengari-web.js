@@ -129,7 +129,7 @@ const run_lua_script_tag = function(tag) {
 };
 
 const contentTypeRegexp = /^(.*?\/.*?)([\t ]*;.*)?$/;
-const maybe_run_lua_script_tag = function(tag) {
+const try_tag = function(tag) {
 	if (tag.tagName !== "SCRIPT")
 		return;
 
@@ -148,7 +148,7 @@ const maybe_run_lua_script_tag = function(tag) {
 	for (let i=0; i<records.length; i++) {
 		let record = records[i];
 		for (let j=0; j<record.addedNodes.length; j++) {
-			maybe_run_lua_script_tag(record.addedNodes[j]);
+			try_tag(record.addedNodes[j]);
 		}
 	}
 })).observe(document, {
@@ -157,8 +157,8 @@ const maybe_run_lua_script_tag = function(tag) {
 });
 
 /* the query selector here is slightly liberal,
-   more checks occur in maybe_run_lua_script_tag */
+   more checks occur in try_tag */
 const selector = 'script[type^="application/lua"] script[type^="text/lua"]';
 
 /* try to run existing script tags */
-Array.prototype.forEach.call(document.querySelectorAll(selector), maybe_run_lua_script_tag);
+Array.prototype.forEach.call(document.querySelectorAll(selector), try_tag);
