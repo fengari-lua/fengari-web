@@ -5,6 +5,7 @@ const lua      = fengari.lua;
 const lauxlib  = fengari.lauxlib;
 const lualib   = fengari.lualib;
 const interop  = require('fengari-interop');
+const sentinel = require('sentinel-js');
 
 const L = lauxlib.luaL_newstate();
 
@@ -143,22 +144,12 @@ const try_tag = function(tag) {
 	}
 };
 
-/* watch for new script tags added to document */
-(new MutationObserver(function(records, observer) {
-	for (let i=0; i<records.length; i++) {
-		let record = records[i];
-		for (let j=0; j<record.addedNodes.length; j++) {
-			try_tag(record.addedNodes[j]);
-		}
-	}
-})).observe(document, {
-	childList: true,
-	subtree: true
-});
-
 /* the query selector here is slightly liberal,
    more checks occur in try_tag */
 const selector = 'script[type^="application/lua"] script[type^="text/lua"]';
+
+/* watch for new script tags added to document */
+sentinel.on(selector, try_tag);
 
 /* try to run existing script tags */
 Array.prototype.forEach.call(document.querySelectorAll(selector), try_tag);

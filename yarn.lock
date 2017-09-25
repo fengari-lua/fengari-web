@@ -2338,6 +2338,10 @@ safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@~5.1.0, 
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
 
+sentinel-js@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/sentinel-js/-/sentinel-js-0.0.4.tgz#44a699b968bf9ecf258ca7e1891de18d62158a0a"
+
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
