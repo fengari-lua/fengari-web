@@ -18,14 +18,14 @@ lua.lua_setglobal(L, lua.to_luastring("_COPYRIGHT"));
 
 const msghandler = function(L) {
 	let ar = new lua.lua_Debug();
-	lua.lua_getstack(L, 2, ar);
-	lua.lua_getinfo(L, lua.to_luastring("Sl"), ar);
+	if (lua.lua_getstack(L, 2, ar))
+		lua.lua_getinfo(L, lua.to_luastring("Sl"), ar);
 	interop.push(L, new ErrorEvent("error", {
 		bubbles: true,
 		cancelable: true,
 		message: lua.lua_tojsstring(L, 1),
 		error: interop.tojs(L, 1),
-		filename: lua.to_jsstring(ar.short_src),
+		filename: ar.short_src ? lua.to_jsstring(ar.short_src) : void 0,
 		lineno: ar.currentline > 0 ? ar.currentline : void 0
 	}));
 	return 1;
