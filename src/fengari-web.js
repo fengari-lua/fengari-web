@@ -130,7 +130,9 @@ const run_lua_script_tag = function(tag) {
 
 const contentTypeRegexp = /^(.*?\/.*?)([\t ]*;.*)?$/;
 const try_tag = function(tag) {
-	if (tag.tagName !== "SCRIPT")
+	if (tag.tagName !== "SCRIPT"
+		|| tag.dataset.fengariVersion !== lua.FENGARI_VERSION
+		|| tag.dataset.luaVersion !== lua.LUA_VERSION)
 		return;
 
 	/* strip off mime type parameters */
