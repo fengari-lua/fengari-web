@@ -1,12 +1,18 @@
 "use strict";
 
-const fengari  = require('fengari');
-const lua      = fengari.lua;
-const lauxlib  = fengari.lauxlib;
-const lualib   = fengari.lualib;
-const interop  = require('fengari-interop');
+const fengari = require('fengari');
+const lua     = fengari.lua;
+const lauxlib = fengari.lauxlib;
+const lualib  = fengari.lualib;
+const interop = require('fengari-interop');
 
 const L = lauxlib.luaL_newstate();
+
+/* Set global for devtools */
+
+if (window.__FENGARI_DEVTOOLS__) {
+	window.__FENGARI_DEVTOOLS__(fengari, interop, L);
+}
 
 /* open standard libraries */
 lualib.luaL_openlibs(L);
