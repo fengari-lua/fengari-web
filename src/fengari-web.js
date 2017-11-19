@@ -8,16 +8,16 @@ const interop = require('fengari-interop');
 
 const L = lauxlib.luaL_newstate();
 
+/* open standard libraries */
+lualib.luaL_openlibs(L);
+lauxlib.luaL_requiref(L, lua.to_luastring("js"), interop.luaopen_js, 1);
+lua.lua_pop(L, 1); /* remove lib */
+
 /* Set global for devtools */
 
 if (window.__FENGARI_DEVTOOLS__) {
 	window.__FENGARI_DEVTOOLS__(fengari, interop, L);
 }
-
-/* open standard libraries */
-lualib.luaL_openlibs(L);
-lauxlib.luaL_requiref(L, lua.to_luastring("js"), interop.luaopen_js, 1);
-lua.lua_pop(L, 1); /* remove lib */
 
 lua.lua_pushstring(L, lua.to_luastring(lua.FENGARI_COPYRIGHT));
 lua.lua_setglobal(L, lua.to_luastring("_COPYRIGHT"));
