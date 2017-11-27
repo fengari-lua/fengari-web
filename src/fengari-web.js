@@ -100,13 +100,15 @@ const run_lua_script_tag = function(tag) {
 				integrity: tag.integrity
 			}).then(function(resp) {
 				if (resp.ok) {
-					resp.arrayBuffer().then(function(buffer) {
-						let code = Array.from(new Uint8Array(buffer));
-						run_lua_script(tag, code, chunkname);
-					});
+					return resp.arrayBuffer();
 				} else {
-					tag.dispatchEvent(new Event("error"));
+					throw "unable to fetch";
 				}
+			}).then(function(buffer) {
+				let code = Array.from(new Uint8Array(buffer));
+				run_lua_script(tag, code, chunkname);
+			}).catch(function(reason) {
+				tag.dispatchEvent(new Event("error"));
 			});
 		} else {
 			/* Needs to be synchronous: use an XHR */
