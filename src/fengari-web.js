@@ -1,12 +1,15 @@
 "use strict";
 
-const fengari  = require('fengari');
-const lua      = fengari.lua;
-const lauxlib  = fengari.lauxlib;
-const lualib   = fengari.lualib;
-const interop  = require('fengari-interop');
+import {lua, lauxlib, lualib} from 'fengari';
+import * as interop from 'fengari-interop';
 
-const L = lauxlib.luaL_newstate();
+export {
+	lua,
+	lauxlib,
+	lualib,
+	interop
+};
+export const L = lauxlib.luaL_newstate();
 
 /* open standard libraries */
 lualib.luaL_openlibs(L);
