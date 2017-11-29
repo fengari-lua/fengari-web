@@ -9,7 +9,9 @@ module.exports = [
         target: 'web',
         output: {
             path: path.resolve(__dirname, 'dist'),
-            filename: 'fengari-web.js'
+            filename: 'fengari-web.js',
+            library: 'fengari',
+            libraryTarget: 'umd'
         },
         node: false,
         module: {
