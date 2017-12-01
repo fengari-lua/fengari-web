@@ -8,6 +8,7 @@
         "Daurnimator <quae@daurnimator.com>"
     ],
     "license": "MIT",
+    "main": "src/fengari-web.js",
     "dependencies": {
         "fengari": "fengari-lua/fengari",
         "fengari-interop": "fengari-lua/fengari-interop"

@@ -1,12 +1,15 @@
 "use strict";
 
-const fengari  = require('fengari');
-const lua      = fengari.lua;
-const lauxlib  = fengari.lauxlib;
-const lualib   = fengari.lualib;
-const interop  = require('fengari-interop');
+import {lua, lauxlib, lualib} from 'fengari';
+import * as interop from 'fengari-interop';
 
-const L = lauxlib.luaL_newstate();
+export {
+	lua,
+	lauxlib,
+	lualib,
+	interop
+};
+export const L = lauxlib.luaL_newstate();
 
 /* open standard libraries */
 lualib.luaL_openlibs(L);
@@ -30,6 +33,24 @@ const msghandler = function(L) {
 	}));
 	return 1;
 };
+
+/* Helper function to load a JS string of Lua source */
+export function load(code, chunkname) {
+	code = lua.to_luastring(code);
+	chunkname = chunkname?lua.to_luastring(chunkname):null;
+	let ok = lauxlib.luaL_loadbuffer(L, code, null, chunkname);
+	let res;
+	if (ok === lua.LUA_ERRSYNTAX) {
+		res = new SyntaxError(lua.lua_tojsstring(L, -1));
+	} else {
+		res = interop.tojs(L, -1);
+	}
+	lua.lua_pop(L, 1);
+	if (ok !== lua.LUA_OK) {
+		throw res;
+	}
+	return res;
+}
 
 const run_lua_script = function(tag, code, chunkname) {
 	let ok = lauxlib.luaL_loadbuffer(L, code, null, chunkname);
