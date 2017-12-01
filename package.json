@@ -8,6 +8,10 @@
         "Daurnimator <quae@daurnimator.com>"
     ],
     "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/fengari-lua/fengari-web/issues"
+    },
+    "homepage": "https://github.com/fengari-lua/fengari-web#readme",
     "main": "src/fengari-web.js",
     "dependencies": {
         "fengari": "fengari-lua/fengari",
