@@ -41,6 +41,9 @@ const msghandler = function(L) {
 };
 
 const run_lua_script = function(tag, code, chunkname) {
+	if (window.__FENGARI_DEVTOOLS_REGISTER_RESOURCE__)
+		window.__FENGARI_DEVTOOLS_REGISTER_RESOURCE__(tag.src?tag.src:document.location, lua.to_jsstring(code));
+
 	let ok = lauxlib.luaL_loadbuffer(L, code, null, chunkname);
 	let e;
 	if (ok === lua.LUA_ERRSYNTAX) {
