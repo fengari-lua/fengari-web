@@ -24,7 +24,8 @@
         "webpack": "^3.5.5"
     },
     "scripts": {
-        "build": "webpack"
+        "build": "webpack -p",
+        "prepare": "npm run build"
     },
     "jshintConfig": {
         "browser": true,
