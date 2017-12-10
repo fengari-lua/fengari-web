@@ -20,8 +20,8 @@
     "devDependencies": {
         "babel-core": "^6.26.0",
         "babel-loader": "^7.1.1",
-        "babel-preset-env": "^1.6.0",
-        "webpack": "^3.5.5"
+        "babel-preset-env": "^1.6.1",
+        "webpack": "^3.10.0"
     },
     "scripts": {
         "build": "webpack -p",
