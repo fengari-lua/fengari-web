@@ -9,7 +9,7 @@
     ],
     "license": "MIT",
     "bugs": {
-      "url": "https://github.com/fengari-lua/fengari-web/issues"
+        "url": "https://github.com/fengari-lua/fengari-web/issues"
     },
     "homepage": "https://github.com/fengari-lua/fengari-web#readme",
     "main": "src/fengari-web.js",
@@ -21,14 +21,46 @@
         "babel-core": "^6.26.0",
         "babel-loader": "^7.1.1",
         "babel-preset-env": "^1.6.1",
+        "eslint": "^4.13.0",
         "webpack": "^3.10.0"
     },
     "scripts": {
         "build": "webpack -p",
+        "lint": "eslint src/",
         "prepare": "npm run build"
     },
-    "jshintConfig": {
-        "browser": true,
-        "esversion": 6
+    "eslintConfig": {
+        "env": {
+            "browser": true,
+            "es6": true
+        },
+        "extends": "eslint:recommended",
+        "parserOptions": {
+            "sourceType": "module"
+        },
+        "rules": {
+            "indent": [
+                "error",
+                "tab",
+                {
+                    "SwitchCase": 1
+                }
+            ],
+            "linebreak-style": [
+                "error",
+                "unix"
+            ],
+            "no-console": 0,
+            "no-unused-vars": [
+                2,
+                {
+                    "args": "none"
+                }
+            ],
+            "semi": [
+                "error",
+                "always"
+            ]
+        }
     }
 }
