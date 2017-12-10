@@ -35,10 +35,15 @@ const msghandler = function(L) {
 };
 
 /* Helper function to load a JS string of Lua source */
-export function load(code, chunkname) {
-	code = lua.to_luastring(code);
+export function load(source, chunkname) {
+	if (typeof source == "string")
+		source = lua.to_luastring(source);
+	else if (!Array.isArray(source))
+		throw TypeError("expected string or array of bytes");
+
+
 	chunkname = chunkname?lua.to_luastring(chunkname):null;
-	let ok = lauxlib.luaL_loadbuffer(L, code, null, chunkname);
+	let ok = lauxlib.luaL_loadbuffer(L, source, null, chunkname);
 	let res;
 	if (ok === lua.LUA_ERRSYNTAX) {
 		res = new SyntaxError(lua.lua_tojsstring(L, -1));
