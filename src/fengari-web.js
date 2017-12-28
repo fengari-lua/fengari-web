@@ -137,7 +137,7 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
 						throw "unable to fetch";
 					}
 				}).then(function(buffer) {
-					let code = Array.from(new Uint8Array(buffer));
+					let code = new Uint8Array(buffer);
 					run_lua_script(tag, code, chunkname);
 				}).catch(function(reason) {
 					tag.dispatchEvent(new Event("error"));
