@@ -26,7 +26,7 @@
     },
     "scripts": {
         "build": "webpack -p",
-        "lint": "eslint src/",
+        "lint": "eslint webpack.config.js src/",
         "prepare": "npm run build"
     },
     "eslintConfig": {
@@ -61,6 +61,15 @@
                 "error",
                 "always"
             ]
-        }
+        },
+        "overrides": [{
+            "files": ["webpack.config.js"],
+            "env": {
+                "node": true
+            },
+            "parserOptions": {
+                "sourceType": "script"
+            }
+        }]
     }
 }
