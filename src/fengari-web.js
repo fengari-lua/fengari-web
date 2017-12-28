@@ -114,79 +114,86 @@ const crossorigin_to_credentials = function(crossorigin) {
 	}
 };
 
-const run_lua_script_tag = function(tag) {
-	if (tag.src) {
-		let chunkname = lua.to_luastring("@"+tag.src);
-		/* JS script tags are async after document has loaded */
-		if (document.readyState === "complete" || tag.async) {
-			fetch(tag.src, {
-				method: "GET",
-				credentials: crossorigin_to_credentials(tag.crossorigin),
-				redirect: "follow",
-				integrity: tag.integrity
-			}).then(function(resp) {
-				if (resp.ok) {
-					return resp.arrayBuffer();
-				} else {
-					throw "unable to fetch";
-				}
-			}).then(function(buffer) {
-				let code = Array.from(new Uint8Array(buffer));
-				run_lua_script(tag, code, chunkname);
-			}).catch(function(reason) {
-				tag.dispatchEvent(new Event("error"));
-			});
-		} else {
-			/* Needs to be synchronous: use an XHR */
-			let xhr = new XMLHttpRequest();
-			xhr.open("GET", tag.src, false);
-			xhr.send();
-			if (xhr.status >= 200 && xhr.status < 300) {
-				/* TODO: subresource integrity check? */
-				let code = lua.to_luastring(xhr.response);
-				run_lua_script(tag, code, chunkname);
+/* global WorkerGlobalScope */ /* see https://github.com/sindresorhus/globals/issues/127 */
+if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
+	/* in a web worker */
+
+} else {
+	/* in main browser window */
+	const run_lua_script_tag = function(tag) {
+		if (tag.src) {
+			let chunkname = lua.to_luastring("@"+tag.src);
+			/* JS script tags are async after document has loaded */
+			if (document.readyState === "complete" || tag.async) {
+				fetch(tag.src, {
+					method: "GET",
+					credentials: crossorigin_to_credentials(tag.crossorigin),
+					redirect: "follow",
+					integrity: tag.integrity
+				}).then(function(resp) {
+					if (resp.ok) {
+						return resp.arrayBuffer();
+					} else {
+						throw "unable to fetch";
+					}
+				}).then(function(buffer) {
+					let code = Array.from(new Uint8Array(buffer));
+					run_lua_script(tag, code, chunkname);
+				}).catch(function(reason) {
+					tag.dispatchEvent(new Event("error"));
+				});
 			} else {
-				tag.dispatchEvent(new Event("error"));
+				/* Needs to be synchronous: use an XHR */
+				let xhr = new XMLHttpRequest();
+				xhr.open("GET", tag.src, false);
+				xhr.send();
+				if (xhr.status >= 200 && xhr.status < 300) {
+					/* TODO: subresource integrity check? */
+					let code = lua.to_luastring(xhr.response);
+					run_lua_script(tag, code, chunkname);
+				} else {
+					tag.dispatchEvent(new Event("error"));
+				}
+			}
+		} else {
+			let code = lua.to_luastring(tag.innerHTML);
+			let chunkname = tag.id ? lua.to_luastring("="+tag.id) : code;
+			run_lua_script(tag, code, chunkname);
+		}
+	};
+
+	const contentTypeRegexp = /^(.*?\/.*?)([\t ]*;.*)?$/;
+	const try_tag = function(tag) {
+		if (tag.tagName !== "SCRIPT")
+			return;
+
+		/* strip off mime type parameters */
+		const contentTypeMatch = contentTypeRegexp.exec(tag.type);
+		if (contentTypeMatch) {
+			const mimetype = contentTypeMatch[1];
+			if (mimetype === "application/lua" || mimetype === "text/lua") {
+				run_lua_script_tag(tag);
 			}
 		}
-	} else {
-		let code = lua.to_luastring(tag.innerHTML);
-		let chunkname = tag.id ? lua.to_luastring("="+tag.id) : code;
-		run_lua_script(tag, code, chunkname);
-	}
-};
+	};
 
-const contentTypeRegexp = /^(.*?\/.*?)([\t ]*;.*)?$/;
-const try_tag = function(tag) {
-	if (tag.tagName !== "SCRIPT")
-		return;
-
-	/* strip off mime type parameters */
-	const contentTypeMatch = contentTypeRegexp.exec(tag.type);
-	if (contentTypeMatch) {
-		const mimetype = contentTypeMatch[1];
-		if (mimetype === "application/lua" || mimetype === "text/lua") {
-			run_lua_script_tag(tag);
+	/* watch for new script tags added to document */
+	(new MutationObserver(function(records, observer) {
+		for (let i=0; i<records.length; i++) {
+			let record = records[i];
+			for (let j=0; j<record.addedNodes.length; j++) {
+				try_tag(record.addedNodes[j]);
+			}
 		}
-	}
-};
+	})).observe(document, {
+		childList: true,
+		subtree: true
+	});
 
-/* watch for new script tags added to document */
-(new MutationObserver(function(records, observer) {
-	for (let i=0; i<records.length; i++) {
-		let record = records[i];
-		for (let j=0; j<record.addedNodes.length; j++) {
-			try_tag(record.addedNodes[j]);
-		}
-	}
-})).observe(document, {
-	childList: true,
-	subtree: true
-});
+	/* the query selector here is slightly liberal,
+	   more checks occur in try_tag */
+	const selector = 'script[type^="application/lua"] script[type^="text/lua"]';
 
-/* the query selector here is slightly liberal,
-   more checks occur in try_tag */
-const selector = 'script[type^="application/lua"] script[type^="text/lua"]';
-
-/* try to run existing script tags */
-Array.prototype.forEach.call(document.querySelectorAll(selector), try_tag);
+	/* try to run existing script tags */
+	Array.prototype.forEach.call(document.querySelectorAll(selector), try_tag);
+}
