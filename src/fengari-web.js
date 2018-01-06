@@ -107,7 +107,7 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
 		if (ok !== lua.LUA_OK) {
 			if (e === void 0) {
 				e = new ErrorEvent("error", {
-					message: lua.lua_tojstring(L, -1),
+					message: lua.lua_tojsstring(L, -1),
 					error: interop.tojs(L, -1)
 				});
 			}
