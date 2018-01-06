@@ -120,8 +120,13 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
 
 	const process_xhr_response = function(xhr, tag, chunkname) {
 		if (xhr.status >= 200 && xhr.status < 300) {
+			let code = xhr.response;
+			if (typeof code === "string") {
+				code = lua.to_luastring(xhr.response);
+			} else { /* is an array buffer */
+				code = new Uint8Array(code);
+			}
 			/* TODO: subresource integrity check? */
-			let code = lua.to_luastring(xhr.response);
 			run_lua_script(tag, code, chunkname);
 		} else {
 			tag.dispatchEvent(new Event("error"));
@@ -155,6 +160,7 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
 				} else {
 					let xhr = new XMLHttpRequest();
 					xhr.open("GET", tag.src, true);
+					xhr.responseType = "arraybuffer";
 					xhr.onreadystatechange = function() {
 						if (xhr.readyState === 4)
 							process_xhr_response(xhr, tag, chunkname);
