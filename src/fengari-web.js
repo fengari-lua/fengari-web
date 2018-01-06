@@ -119,41 +119,54 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
 	/* in a web worker */
 
 } else {
+	const process_xhr_response = function(xhr, tag, chunkname) {
+		if (xhr.status >= 200 && xhr.status < 300) {
+			/* TODO: subresource integrity check? */
+			let code = lua.to_luastring(xhr.response);
+			run_lua_script(tag, code, chunkname);
+		} else {
+			tag.dispatchEvent(new Event("error"));
+		}
+	};
 	/* in main browser window */
 	const run_lua_script_tag = function(tag) {
 		if (tag.src) {
 			let chunkname = lua.to_luastring("@"+tag.src);
 			/* JS script tags are async after document has loaded */
 			if (document.readyState === "complete" || tag.async) {
-				fetch(tag.src, {
-					method: "GET",
-					credentials: crossorigin_to_credentials(tag.crossorigin),
-					redirect: "follow",
-					integrity: tag.integrity
-				}).then(function(resp) {
-					if (resp.ok) {
-						return resp.arrayBuffer();
-					} else {
-						throw "unable to fetch";
-					}
-				}).then(function(buffer) {
-					let code = new Uint8Array(buffer);
-					run_lua_script(tag, code, chunkname);
-				}).catch(function(reason) {
-					tag.dispatchEvent(new Event("error"));
-				});
+				if (typeof fetch === "function") {
+					fetch(tag.src, {
+						method: "GET",
+						credentials: crossorigin_to_credentials(tag.crossorigin),
+						redirect: "follow",
+						integrity: tag.integrity
+					}).then(function(resp) {
+						if (resp.ok) {
+							return resp.arrayBuffer();
+						} else {
+							throw "unable to fetch";
+						}
+					}).then(function(buffer) {
+						let code = new Uint8Array(buffer);
+						run_lua_script(tag, code, chunkname);
+					}).catch(function(reason) {
+						tag.dispatchEvent(new Event("error"));
+					});
+				} else {
+					let xhr = new XMLHttpRequest();
+					xhr.open("GET", tag.src, true);
+					xhr.onreadystatechange = function() {
+						if (xhr.readyState === 4)
+							process_xhr_response(xhr, tag, chunkname);
+					};
+					xhr.send();
+				}
 			} else {
 				/* Needs to be synchronous: use an XHR */
 				let xhr = new XMLHttpRequest();
 				xhr.open("GET", tag.src, false);
 				xhr.send();
-				if (xhr.status >= 200 && xhr.status < 300) {
-					/* TODO: subresource integrity check? */
-					let code = lua.to_luastring(xhr.response);
-					run_lua_script(tag, code, chunkname);
-				} else {
-					tag.dispatchEvent(new Event("error"));
-				}
+				process_xhr_response(xhr, tag, chunkname);
 			}
 		} else {
 			let code = lua.to_luastring(tag.innerHTML);
