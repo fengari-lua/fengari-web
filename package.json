@@ -63,14 +63,18 @@
                 "always"
             ]
         },
-        "overrides": [{
-            "files": ["webpack.config.js"],
-            "env": {
-                "node": true
-            },
-            "parserOptions": {
-                "sourceType": "script"
+        "overrides": [
+            {
+                "files": [
+                    "webpack.config.js"
+                ],
+                "env": {
+                    "node": true
+                },
+                "parserOptions": {
+                    "sourceType": "script"
+                }
             }
-        }]
+        ]
     }
 }
