@@ -38,5 +38,25 @@ module.exports = [
 				"typeof process": JSON.stringify("undefined")
 			})
 		]
+	},
+	{
+		/*
+		This target exists to create a bundle that has the node-specific paths eliminated.
+		It is expected that most people would minify this with their own build process
+		*/
+		name: 'bundle',
+		entry: './src/fengari-web.js',
+		target: 'web',
+		output: {
+			path: path.resolve(__dirname, 'dist'),
+			filename: 'fengari-web.bundle.js',
+			libraryTarget: 'commonjs2'
+		},
+		node: false,
+		plugins: [
+			new webpack.DefinePlugin({
+				"typeof process": JSON.stringify("undefined")
+			})
+		]
 	}
 ];
