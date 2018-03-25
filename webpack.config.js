@@ -5,6 +5,10 @@ const path = require('path');
 
 module.exports = [
 	{
+		/*
+		This target produces a file suitable for embedding onto any webpage via a <script> tag.
+		*/
+		name: 'script-tag',
 		entry: './src/fengari-web.js',
 		target: 'web',
 		output: {
