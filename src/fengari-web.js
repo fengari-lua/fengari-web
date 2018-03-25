@@ -252,13 +252,14 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
 			return;
 
 		/* strip off mime type parameters */
-		const contentTypeMatch = contentTypeRegexp.exec(tag.type);
-		if (contentTypeMatch) {
-			const mimetype = contentTypeMatch[1];
-			if (mimetype === "application/lua" || mimetype === "text/lua") {
-				run_lua_script_tag(tag);
-			}
-		}
+		let contentTypeMatch = contentTypeRegexp.exec(tag.type);
+		if (!contentTypeMatch)
+			return;
+		let mimetype = contentTypeMatch[1];
+		if (mimetype !== "application/lua" && mimetype !== "text/lua")
+			return;
+
+		run_lua_script_tag(tag);
 	};
 
 	/* watch for new script tags added to document */
