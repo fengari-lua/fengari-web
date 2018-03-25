@@ -90,8 +90,7 @@ export function load(source, chunkname) {
 	if (typeof source == "string")
 		source = to_luastring(source);
 	else if (!Array.isArray(source))
-		throw TypeError("expected string or array of bytes");
-
+		throw new TypeError("expected string or array of bytes");
 
 	chunkname = chunkname?to_luastring(chunkname):null;
 	let ok = luaL_loadbuffer(L, source, null, chunkname);
@@ -215,7 +214,7 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
 						if (resp.ok) {
 							return resp.arrayBuffer();
 						} else {
-							throw "unable to fetch";
+							throw new Error("unable to fetch");
 						}
 					}).then(function(buffer) {
 						let code = new Uint8Array(buffer);
