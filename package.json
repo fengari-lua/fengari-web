@@ -12,7 +12,7 @@
         "url": "https://github.com/fengari-lua/fengari-web/issues"
     },
     "homepage": "https://github.com/fengari-lua/fengari-web#readme",
-    "main": "src/fengari-web.js",
+    "main": "dist/fengari-web.bundle.js",
     "dependencies": {
         "fengari": "fengari-lua/fengari",
         "fengari-interop": "fengari-lua/fengari-interop"
