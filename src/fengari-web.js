@@ -27,6 +27,8 @@ const {
 	LUA_ERRRUN,
 	LUA_ERRSYNTAX,
 	LUA_OK,
+	LUA_VERSION_MAJOR,
+	LUA_VERSION_MINOR,
 	lua_Debug,
 	lua_getinfo,
 	lua_getstack,
@@ -247,6 +249,7 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
 	};
 
 	const contentTypeRegexp = /^(.*?\/.*?)([\t ]*;.*)?$/;
+	const luaVersionRegex = /^(\d+)\.(\d+)$/;
 	const try_tag = function(tag) {
 		if (tag.tagName !== "SCRIPT")
 			return;
@@ -258,6 +261,12 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
 		let mimetype = contentTypeMatch[1];
 		if (mimetype !== "application/lua" && mimetype !== "text/lua")
 			return;
+
+		if (tag.hasAttribute("lua-version")) {
+			let lua_version = luaVersionRegex.exec(tag.getAttribute("lua-version"));
+			if (!lua_version || lua_version[1] !== LUA_VERSION_MAJOR || lua_version[2] !== LUA_VERSION_MINOR)
+				return;
+		}
 
 		run_lua_script_tag(tag);
 	};
