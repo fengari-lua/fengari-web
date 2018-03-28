@@ -1,7 +1,6 @@
 "use strict";
 
 const webpack = require('webpack');
-const path = require('path');
 
 module.exports = [
 	{
@@ -12,7 +11,6 @@ module.exports = [
 		entry: './src/fengari-web.js',
 		target: 'web',
 		output: {
-			path: path.resolve(__dirname, 'dist'),
 			filename: 'fengari-web.js',
 			library: 'fengari',
 			libraryTarget: 'umd'
@@ -49,7 +47,6 @@ module.exports = [
 		entry: './src/fengari-web.js',
 		target: 'web',
 		output: {
-			path: path.resolve(__dirname, 'dist'),
 			filename: 'fengari-web.bundle.js',
 			libraryTarget: 'commonjs2'
 		},
