@@ -45,3 +45,16 @@ Verified to work in:
   - Safari >= 8
   - Microsoft IE 11
   - Microsoft Edge
+
+
+## API
+
+As well as running `<script type="application/lua">` tags, fengari-web creates a `fengari` global that contains the [core `fengari` API](https://github.com/fengari-lua/fengari#the-js-api) supplemented with:
+
+  - `L`: the main `lua_State` (in which script tags are run)
+  - `interop`: containing the [fengari-interop](https://github.com/fengari-lua/fengari-interop)
+  - `load(source, chunkname)`: a function that loads the lua code in `source` with the optional chunk name `chunkname` and returns it as a function.
+    This function can be used to programmatically run lua code in the main `lua_State` from JavaScript. e.g.
+    ```js
+    console.log(fengari.load('return 1+1')())
+    ```
