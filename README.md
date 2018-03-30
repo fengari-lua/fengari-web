@@ -32,3 +32,16 @@ print("hello world !")
 ```
 
 Note that if you use a `src` tag, it is strongly recommended for it to be [`async`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-async).
+
+
+## Compatability
+
+fengari-web should work in all modern browsers.
+
+Verified to work in:
+
+  - Chrome >= 38
+  - Firefox >= 19
+  - Safari >= 8
+  - Microsoft IE 11
+  - Microsoft Edge
