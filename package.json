@@ -28,7 +28,8 @@
     "scripts": {
         "build": "webpack -p",
         "lint": "eslint webpack.config.js src/",
-        "prepare": "npm run build"
+        "prepare": "npm run build",
+        "prepublishOnly": "git diff-index --quiet --cached HEAD -- && npm run lint"
     },
     "eslintConfig": {
         "env": {
