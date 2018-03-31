@@ -91,8 +91,8 @@ lua_setglobal(L, to_luastring("_COPYRIGHT"));
 export function load(source, chunkname) {
 	if (typeof source == "string")
 		source = to_luastring(source);
-	else if (!Array.isArray(source))
-		throw new TypeError("expected string or array of bytes");
+	else if (!(source instanceof Uint8Array))
+		throw new TypeError("expects an array of bytes or javascript string");
 
 	chunkname = chunkname?to_luastring(chunkname):null;
 	let ok = luaL_loadbuffer(L, source, null, chunkname);
