@@ -1,15 +1,22 @@
 # fengari-web
 
-Provides anything you need to run [Fengari](https://github.com/fengari-lua/fengari) in the browser.
+Provides anything you need to run [Fengari](https://fengari.io) in the browser.
 
 ## Getting started
+
+### Download
+
+Visit the [GitHub releases page](https://github.com/fengari-lua/fengari-web/releases) and get the latest version.
+
+Alternatively you can [Build](#Building) fengari-web yourself.
+
 
 ### Directly
 
 Load fengari-web in your web page:
 
 ```html
-<script src="dist/fengari-web.js" type="text/javascript"></script>
+<script src="fengari-web.js" type="text/javascript"></script>
 ```
 
 Now any script of type `application/lua` will be run by fengari:
