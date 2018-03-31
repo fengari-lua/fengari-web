@@ -4,6 +4,8 @@ Provides anything you need to run [Fengari](https://github.com/fengari-lua/fenga
 
 ## Getting started
 
+### Directly
+
 Load fengari-web in your web page:
 
 ```html
@@ -21,6 +23,11 @@ print("Hello World!")
 ```
 
 Note that if you use a `src` attribute, it is strongly recommended for it to be [`async`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-async).
+
+
+### With build process
+
+See [fengari-loader](https://github.com/fengari-lua/fengari-loader/)
 
 
 ## Compatibility
