@@ -286,7 +286,7 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
 
 	/* the query selector here is slightly liberal,
 	   more checks occur in try_tag */
-	const selector = 'script[type^="application/lua"] script[type^="text/lua"]';
+	const selector = 'script[type^="application/lua"], script[type^="text/lua"]';
 
 	/* try to run existing script tags */
 	Array.prototype.forEach.call(document.querySelectorAll(selector), try_tag);
