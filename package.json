@@ -1,6 +1,6 @@
 {
     "name": "fengari-web",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Provides anything you need to run Fengari in the browser",
     "repository": "https://github.com/fengari-lua/fengari-web.git",
     "contributors": [
