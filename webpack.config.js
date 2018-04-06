@@ -15,6 +15,7 @@ module.exports = [
 			library: 'fengari',
 			libraryTarget: 'umd'
 		},
+		devtool: 'hidden-source-map',
 		node: false,
 		module: {
 			rules: [
@@ -50,6 +51,7 @@ module.exports = [
 			filename: 'fengari-web.bundle.js',
 			libraryTarget: 'commonjs2'
 		},
+		devtool: 'hidden-source-map',
 		node: false,
 		plugins: [
 			new webpack.DefinePlugin({
