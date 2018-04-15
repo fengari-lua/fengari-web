@@ -112,7 +112,9 @@ export function load(source, chunkname) {
 /* global WorkerGlobalScope */ /* see https://github.com/sindresorhus/globals/issues/127 */
 if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
 	/* in a web worker */
-} else {
+} else if (typeof document !== 'undefined' && document instanceof HTMLDocument) {
+	/* Have a document, e.g. we are in main browser window */
+
 	const crossorigin_to_credentials = function(crossorigin) {
 		switch(crossorigin) {
 			case "anonymous": return "omit";
@@ -200,7 +202,6 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
 		}
 	};
 
-	/* in main browser window */
 	const run_lua_script_tag = function(tag) {
 		if (tag.src) {
 			let chunkname = to_luastring("@"+tag.src);
