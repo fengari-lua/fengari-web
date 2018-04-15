@@ -272,18 +272,22 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
 		run_lua_script_tag(tag);
 	};
 
-	/* watch for new script tags added to document */
-	(new MutationObserver(function(records, observer) {
-		for (let i=0; i<records.length; i++) {
-			let record = records[i];
-			for (let j=0; j<record.addedNodes.length; j++) {
-				try_tag(record.addedNodes[j]);
+	if (typeof MutationObserver !== 'undefined') {
+		/* watch for new script tags added to document */
+		(new MutationObserver(function(records, observer) {
+			for (let i=0; i<records.length; i++) {
+				let record = records[i];
+				for (let j=0; j<record.addedNodes.length; j++) {
+					try_tag(record.addedNodes[j]);
+				}
 			}
-		}
-	})).observe(document, {
-		childList: true,
-		subtree: true
-	});
+		})).observe(document, {
+			childList: true,
+			subtree: true
+		});
+	} else if (console.warn) {
+		console.warn("fengari-web: MutationObserver not found; lua script tags will not be run when inserted");
+	}
 
 	/* the query selector here is slightly liberal,
 	   more checks occur in try_tag */
