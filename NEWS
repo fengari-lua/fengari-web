@@ -1,3 +1,8 @@
+UNRELEASED
+
+  - Change check for non-webworker to a check for document object
+
+
 0.1.1 - 2018-04-03
 
   - Fix CSS selector so that script tags present on fengari-web load are run
