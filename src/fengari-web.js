@@ -109,10 +109,7 @@ export function load(source, chunkname) {
 	return res;
 }
 
-/* global WorkerGlobalScope */ /* see https://github.com/sindresorhus/globals/issues/127 */
-if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
-	/* in a web worker */
-} else if (typeof document !== 'undefined' && document instanceof HTMLDocument) {
+if (typeof document !== 'undefined' && document instanceof HTMLDocument) {
 	/* Have a document, e.g. we are in main browser window */
 
 	const crossorigin_to_credentials = function(crossorigin) {
