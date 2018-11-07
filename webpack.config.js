@@ -23,7 +23,7 @@ module.exports = [
 					test: [/\.js$/],
 					loader: 'babel-loader',
 					options: {
-						presets: [['env', {
+						presets: [['@babel/preset-env', {
 							"targets": {
 								"browsers": ["last 2 versions", "not safari <= 7", "not ie <= 10"]
 							}
