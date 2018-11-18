@@ -14,12 +14,12 @@
     "homepage": "https://github.com/fengari-lua/fengari-web#readme",
     "main": "dist/fengari-web.bundle.js",
     "dependencies": {
-        "fengari": "^0.1.3",
+        "fengari": "^0.1.4",
         "fengari-interop": "^0.1"
     },
     "devDependencies": {
-        "@babel/core": "^7.1.5",
-        "@babel/preset-env": "^7.1.5",
+        "@babel/core": "^7.1.6",
+        "@babel/preset-env": "^7.1.6",
         "babel-loader": "^8.0.4",
         "eslint": "^5.9.0",
         "webpack": "^4.25.1",
