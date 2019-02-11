@@ -179,7 +179,7 @@ if (typeof document !== 'undefined' && document instanceof HTMLDocument) {
 			}
 			lua_pop(L, 1);
 			if (window.dispatchEvent(e)) {
-				console.error("uncaught exception", e.error);
+				console.error("uncaught exception: " + e.error);
 			}
 		}
 	};
