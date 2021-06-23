@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/fengari-lua/fengari-web.svg?branch=master)](https://travis-ci.org/fengari-lua/fengari-web)
 [![npm](https://img.shields.io/npm/v/fengari-web.svg)](https://npmjs.com/package/fengari-web)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![#fengari on Freenode](https://img.shields.io/Freenode/%23fengari.png)](https://webchat.freenode.net/?channels=fengari)
+[![#fengari on libera.chat](https://img.shields.io/badge/chat-%23fengari-brightgreen)](https://web.libera.chat/?channels=#fengari)
 
 
 # fengari-web
